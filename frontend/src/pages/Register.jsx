@@ -35,7 +35,7 @@ function Register() {
     return newErrors;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const validationErrors = validate();
@@ -44,7 +44,24 @@ function Register() {
     } else {
       setErrors({});
 
-      // TODO: Call register API here
+      try {
+        const res = await fetch("http://localhost:5000/api/users/register", {
+          method: "POST",
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify(formData)
+        });
+        
+        const data = await res.json();
+
+        if (res.ok) {
+          alert("Account created");
+          window.location.href = "/login";
+        } else {
+          alert(data.message || "Something went wrong");
+        }
+      } catch(error) {
+        console.log(`Error : ${error.message}`);
+      }
     }
   };
 
@@ -59,7 +76,7 @@ function Register() {
         <h4 className="text-gray-400">
           Already have an account?{"  "}
           <Link to="/login" className="underline">
-            Log in.
+            Log in
           </Link>
         </h4>
 
@@ -104,7 +121,10 @@ function Register() {
             </label>
             <input
               type="password"
-              placeholder="Enter email"
+              name="password"
+              placeholder="Enter password"
+              value={formData.password}
+              onChange={handleChange}
               className="mt-1 w-full p-2 border rounded-lg text-[#ffccff] focus:ring-2 focus:ring-purple-500 outline-none"
             />
             {errors.password && (

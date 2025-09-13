@@ -1,16 +1,43 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
 // Yes. This looks bad as well.
 // TODO: Same as Register page make this much much better.
 function Login() {
+  const [formData, setFormData] = useState({
+    username: "",
+    password: "",
+  });
 
-    const handleSubmit = (e) => {
-        e.preventDefaults();
-        console.log("Handle submitting here");
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
-        // TODO: Handle submitting here
-        // TODO: Call login API here
+  // FIXME: NetworkError when attempting to fetch resource.
+  const handleSubmit = async () => {
+    console.log("Handle submitting here");
+    console.log(`Form data : ${formData}`);
+
+    try {
+        // FIXME: This is not working
+      const res = await fetch("http://localhost:5000/api/users/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const data = res.json();
+
+      if (res.ok) {
+        console.log(data);
+        if (data.token) {
+          // localStorage.setItem("token", data.token);
+        }
+      }
+    } catch (error) {
+      console.log(`Errors: ${error.message}`);
     }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-purple-500 to-purple-800">
@@ -25,7 +52,7 @@ function Login() {
           </Link>
         </h4>
 
-        <form action="" className="mt-10">
+        <form action="" className="mt-10" onSubmit={handleSubmit}>
           <div>
             <label className="block text-lg text-gray-200 mt-3 font-semibold">
               Username
@@ -33,6 +60,7 @@ function Login() {
             <input
               type="text"
               name="username"
+              onChange={handleChange}
               placeholder="Enter username"
               className="mt-1 w-full p-2 border rounded-lg text-[#ffccff] focus:ring-2 focus:ring-purple-500 outline-none"
             />
@@ -45,6 +73,7 @@ function Login() {
             <input
               type="password"
               name="password"
+              onChange={handleChange}
               placeholder="Enter your password"
               className="mt-1 w-full p-2 border rounded-lg text-[#ffccff] focus:ring-2 focus:ring-purple-500 outline-none"
             />
@@ -52,7 +81,6 @@ function Login() {
 
           <button
             type="submit"
-            onClick={handleSubmit}
             className="w-full mt-6 bg-purple-600 hover:bg-purple-800 text-white font-semibold py-2 px-4 rounded-lg transition"
           >
             Submit
