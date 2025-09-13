@@ -1,6 +1,3 @@
-// TODO: Make the register page
-// TODO: Make this such that
-
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -10,7 +7,6 @@ function Register() {
     email: "",
     password: "",
   });
-
   const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
@@ -47,10 +43,13 @@ function Register() {
       setErrors(validationErrors);
     } else {
       setErrors({});
-      console.log("There are no errors");
+
+      // TODO: Call register API here
     }
   };
 
+  // I know it looks basic and too basic.
+  // TODO: Make this better looking. Modernish, with gradients and pictures
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-purple-800 to-purple-500">
       <div className="bg-[#2c2638] rounded-2xl shadow-xl w-full max-w-md p-8 transition">
@@ -66,7 +65,7 @@ function Register() {
 
         <form action="" className="mt-10">
           <div>
-            <label className="block font-medium text-lg text-gray-200 mt-3">
+            <label className="block font-semibold text-lg text-gray-200 mt-3">
               Username
             </label>
             <input
@@ -83,7 +82,7 @@ function Register() {
           </div>
 
           <div>
-            <label className="block text-lg font-medium text-gray-200 mt-3">
+            <label className="block text-lg font-semibold text-gray-200 mt-3">
               Email
             </label>
             <input
@@ -100,7 +99,7 @@ function Register() {
           </div>
 
           <div>
-            <label className="block text-lg font-medium text-gray-200 mt-3">
+            <label className="block text-lg font-semibold text-gray-200 mt-3">
               Password
             </label>
             <input
