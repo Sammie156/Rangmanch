@@ -2,6 +2,8 @@ import pool from "../config/db.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
+// TODO: Connect with Front-End
+
 // WORKS FOR NOW
 export const registerUser = async (req, res) => {
   const { username, email, password } = req.body;
