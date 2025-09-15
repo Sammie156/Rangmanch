@@ -47,10 +47,10 @@ function Register() {
       try {
         const res = await fetch("http://localhost:5000/api/users/register", {
           method: "POST",
-          headers: {"Content-Type": "application/json"},
-          body: JSON.stringify(formData)
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formData),
         });
-        
+
         const data = await res.json();
 
         if (res.ok) {
@@ -59,7 +59,7 @@ function Register() {
         } else {
           alert(data.message || "Something went wrong");
         }
-      } catch(error) {
+      } catch (error) {
         console.log(`Error : ${error.message}`);
       }
     }

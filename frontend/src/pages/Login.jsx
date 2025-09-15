@@ -14,24 +14,23 @@ function Login() {
   };
 
   // FIXME: NetworkError when attempting to fetch resource.
-  const handleSubmit = async () => {
-    console.log("Handle submitting here");
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     console.log(`Form data : ${formData}`);
 
     try {
-        // FIXME: This is not working
       const res = await fetch("http://localhost:5000/api/users/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
 
-      const data = res.json();
+      const data = await res.json();
 
       if (res.ok) {
         console.log(data);
         if (data.token) {
-          // localStorage.setItem("token", data.token);
+          localStorage.setItem("token", data.token);
         }
       }
     } catch (error) {

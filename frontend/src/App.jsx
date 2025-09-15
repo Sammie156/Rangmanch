@@ -5,7 +5,7 @@ function App() {
     <div className="bg-[#1e1e1e]">
       <Navbar />
     </div>
-  )
+  );
 }
 
 export default App;
