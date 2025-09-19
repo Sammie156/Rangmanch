@@ -18,6 +18,7 @@ function Login() {
     e.preventDefault();
     console.log(`Form data : ${formData}`);
 
+    // FIXME: Make the frontend talk to the AWS backend, while using .env to prevent leak
     try {
       const res = await fetch("http://localhost:5000/api/users/login", {
         method: "POST",

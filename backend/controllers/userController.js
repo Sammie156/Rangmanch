@@ -4,6 +4,17 @@ import jwt from "jsonwebtoken";
 
 // TODO: Connect with Front-End
 
+// A testing route
+export const testAPI = async (req, res) => {
+  const {body_message} = req.body;
+
+  try {
+    res.status(201).json({message: body_message});
+  } catch (err) {
+    res.status(500).json({error: err.message});
+  }
+}
+
 // WORKS FOR NOW
 export const registerUser = async (req, res) => {
   const { username, email, password } = req.body;
