@@ -10,10 +10,8 @@ export default function Home() {
           "url('https://images.unsplash.com/photo-1505691938895-1758d7feb511?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80')",
       }}
     >
-      {/* Dark overlay */}
       <div className="absolute inset-0 bg-black/70"></div>
 
-      {/* Content */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

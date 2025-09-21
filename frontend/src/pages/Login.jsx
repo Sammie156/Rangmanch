@@ -17,7 +17,7 @@ function Login() {
     console.log(`Form data : ${formData}`);
 
     try {
-      const res = await fetch("http://localhost:5000/api/users/login", {
+      const res = await fetch("http://13.126.240.74:5000/api/users/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),

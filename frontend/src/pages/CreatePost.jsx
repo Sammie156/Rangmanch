@@ -56,7 +56,7 @@ function CreatePost() {
               placeholder="Post Title"
               value={formData.title}
               onChange={handleChange}
-              className="w-full p-3 rounded-xl bg-white/10 text-white placeholder-gray-400 border border-white/20 focus:ring-2 focus:ring-purple-500 outline-none"
+              className="w-full p-3 rounded-xl hover:bg-white/20 transition bg-white/10 text-white placeholder-gray-400 border border-white/20 focus:ring-2 focus:ring-purple-500 outline-none"
             />
 
             <textarea
@@ -65,7 +65,7 @@ function CreatePost() {
               value={formData.description}
               onChange={handleChange}
               rows="4"
-              className="w-full p-3 rounded-xl bg-white/10 text-white placeholder-gray-400 border border-white/20 focus:ring-2 focus:ring-purple-500 outline-none"
+              className="w-full p-3 rounded-xl bg-white/10 hover:bg-white/20 transition text-white placeholder-gray-400 border border-white/20 focus:ring-2 focus:ring-purple-500 outline-none"
             />
 
             <div>
@@ -77,27 +77,54 @@ function CreatePost() {
                 htmlFor="file-upload"
                 className="flex flex-col items-center justify-center w-full h-20 px-4 transition bg-white/10 border-2 border-dashed border-white/30 rounded-xl cursor-pointer hover:border-purple-400 hover:bg-white/20"
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-10 h-10 text-purple-400"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M7 16V4m0 0L3 8m4-4l4 4M17 8v12m0 0l-4-4m4 4l4-4"
-                  />
-                </svg>
-                <span className="text-gray-300 font-medium">
-                  Click to upload or drag & drop
-                </span>
-                {file && (
-                  <p className="mt-2 text-sm text-purple-300">
-                    Selected: {file.name}
-                  </p>
+                {!file ? (
+                  <>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="w-10 h-10 text-purple-400"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M7 16V4m0 0L3 8m4-4l4 4M17 8v12m0 0l-4-4m4 4l4-4"
+                      />
+                    </svg>
+                    <span className="text-gray-300 font-medium">
+                      Click to upload or drag & drop
+                    </span>
+                  </>
+                ) : (
+                  <div className="flex flex-col items-center">
+                    {file.type.startsWith("image/") ? (
+                      <img
+                        src={URL.createObjectURL(file)}
+                        alt="Preview"
+                        className="h-24 w-24 object-cover rounded-lg shadow-md mb-2"
+                      />
+                    ) : (
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="w-12 h-12 text-purple-400 mb-2"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M12 4v16m8-8H4"
+                        />
+                      </svg>
+                    )}
+                    <p className="text-sm text-purple-300 font-medium">
+                      {file.name}
+                    </p>
+                  </div>
                 )}
               </label>
 
