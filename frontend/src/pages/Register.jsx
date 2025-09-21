@@ -41,7 +41,7 @@ function Register() {
       setErrors({});
       try {
         const res = await fetch(
-          "https://fb24d8bf88df.ngrok-free.app/api/users/register",
+          "https://d38f08d6aad2.ngrok-free.app/api/users/register",
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
