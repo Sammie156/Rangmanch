@@ -1,2 +1,4 @@
 .env
 *.pem
+
+backend/node_modules

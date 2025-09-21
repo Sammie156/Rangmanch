@@ -1,38 +1,99 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 
-function Navbar() {
-  function onLogout() {
-    console.log("Removing tokens");
-
-    localStorage.removeItem("token");
-  }
+export default function Navbar() {
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav className="flex items-center justify-between px-8 py-4 bg-[#1f1f1f] shadow-md">
-      <h1 className="text-3xl text-indigo-100">
-        <Link to="/">Rangmanch</Link>
-      </h1>
+    <nav className="fixed top-0 w-full z-50 px-6 py-4 bg-white/10 backdrop-blur-md border-b border-white/20 shadow-lg">
+      <div className="max-w-7xl mx-auto flex justify-between items-center">
+        {/* Logo */}
+        <Link to="/" className="text-2xl font-extrabold text-white">
+          Rangmanch
+        </Link>
 
-      {localStorage.getItem("token") ? (
-        <div>
-          <h1 className="text-[#ffaaff]">Registered</h1>
-          <button
-            onClick={onLogout}
-            className="text-[#ffffff] bg-purple-600 py-2 px-4 font-semibold rounded-lg hover:bg-purple-800 transition"
+        {/* Desktop Menu */}
+        <div className="hidden md:flex space-x-6 items-center">
+          <Link
+            to="/"
+            className="text-white hover:text-purple-400 font-semibold transition"
           >
-            Logout
+            Home
+          </Link>
+          <Link
+            to="/create-post"
+            className="text-white hover:text-purple-400 font-semibold transition"
+          >
+            Create Post
+          </Link>
+          <Link
+            to="/login"
+            className="bg-white/10 hover:bg-white/20 text-white font-semibold py-2 px-5 rounded-xl transition"
+          >
+            Login
+          </Link>
+          <Link
+            to="/register"
+            className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-5 rounded-xl transition"
+          >
+            Register
+          </Link>
+        </div>
+
+        {/* Mobile Menu Button */}
+        <div className="md:hidden flex items-center">
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="text-white focus:outline-none"
+          >
+            {isOpen ? (
+              <span className="text-3xl">&times;</span>
+            ) : (
+              <span className="text-3xl">&#9776;</span>
+            )}
           </button>
         </div>
-      ) : (
-        <div>
-          <button className="text-[#ffffff] bg-purple-600 py-2 px-4 font-semibold rounded-lg hover:bg-purple-800 transition">
-            <Link to="/login">Login</Link>
-          </button>
-          <h1 className="text-[#33ff33]">Not registered</h1>
-        </div>
+      </div>
+
+      {/* Mobile Menu */}
+      {isOpen && (
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          className="md:hidden mt-4 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-4 space-y-3 flex flex-col"
+        >
+          <Link
+            to="/"
+            className="text-white hover:text-purple-400 font-semibold transition"
+            onClick={() => setIsOpen(false)}
+          >
+            Home
+          </Link>
+          <Link
+            to="/create-post"
+            className="text-white hover:text-purple-400 font-semibold transition"
+            onClick={() => setIsOpen(false)}
+          >
+            Create Post
+          </Link>
+          <Link
+            to="/login"
+            className="bg-white/10 hover:bg-white/20 text-white font-semibold py-2 px-5 rounded-xl transition text-center"
+            onClick={() => setIsOpen(false)}
+          >
+            Login
+          </Link>
+          <Link
+            to="/register"
+            className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-5 rounded-xl transition text-center"
+            onClick={() => setIsOpen(false)}
+          >
+            Register
+          </Link>
+        </motion.div>
       )}
     </nav>
   );
 }
-
-export default Navbar;

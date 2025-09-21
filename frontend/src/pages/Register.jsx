@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -15,35 +16,29 @@ function Register() {
 
   const validate = () => {
     const newErrors = {};
-
     if (!formData.username.trim()) {
       newErrors.username = "Username is required";
     }
-
     if (!formData.email) {
       newErrors.email = "Email is required";
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
       newErrors.email = "Email is invalid";
     }
-
     if (!formData.password) {
       newErrors.password = "Password is required";
     } else if (formData.password.length < 6) {
-      newErrors.password = "Password should be of 6 characters";
+      newErrors.password = "Password should be at least 6 characters";
     }
-
     return newErrors;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const validationErrors = validate();
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
     } else {
       setErrors({});
-
       try {
         const res = await fetch("http://localhost:5000/api/users/register", {
           method: "POST",
@@ -65,82 +60,89 @@ function Register() {
     }
   };
 
-  // I know it looks basic and too basic.
-  // TODO: Make this better looking. Modernish, with gradients and pictures
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-purple-800 to-purple-500">
-      <div className="bg-[#2c2638] rounded-2xl shadow-xl w-full max-w-md p-8 transition">
-        <h2 className="text-2xl font-bold text-[#f9fafd] mb-1">
+    <div
+      className="min-h-screen flex items-center justify-center bg-black bg-cover bg-center relative"
+      style={{
+        backgroundImage:
+          "url('https://images.unsplash.com/photo-1537861295351-76bb831ece99?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')",
+      }}
+    >
+      <div className="absolute inset-0 bg-black/70"></div>
+
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95, y: 30 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        className="relative bg-white/10 mt-10 backdrop-blur-md border border-white/20 rounded-2xl shadow-2xl w-full max-w-md p-8"
+      >
+        <h2 className="text-4xl font-extrabold text-white mb-3 text-center">
           Create an Account
         </h2>
-        <h4 className="text-gray-400">
-          Already have an account?{"  "}
-          <Link to="/login" className="underline">
+        <p className="text-gray-200 text-center mb-6 font-medium">
+          Already have an account?{" "}
+          <Link
+            to="/login"
+            className="text-purple-400 font-semibold hover:underline"
+          >
             Log in
           </Link>
-        </h4>
+        </p>
 
-        <form action="" className="mt-10">
+        <form onSubmit={handleSubmit} className="space-y-6 font-semibold">
           <div>
-            <label className="block font-semibold text-lg text-gray-200 mt-3">
-              Username
-            </label>
+            <label className="block text-sm text-gray-200 mb-2">Username</label>
             <input
               type="text"
               name="username"
               placeholder="Enter username"
               value={formData.username}
               onChange={handleChange}
-              className="mt-1 w-full p-2 border rounded-lg text-[#ffccff] focus:ring-2 focus:ring-purple-500 outline-none"
+              className="w-full p-3 rounded-xl bg-white/10 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
             {errors.username && (
-              <p className="text-red-500 text-sm mt-1">{errors.username}</p>
+              <p className="text-red-400 text-sm mt-1">{errors.username}</p>
             )}
           </div>
 
           <div>
-            <label className="block text-lg font-semibold text-gray-200 mt-3">
-              Email
-            </label>
+            <label className="block text-sm text-gray-200 mb-2">Email</label>
             <input
               type="email"
               name="email"
+              placeholder="Enter email"
               value={formData.email}
               onChange={handleChange}
-              placeholder="Enter email"
-              className="mt-1 w-full p-2 border rounded-lg text-[#ffccff] focus:ring-2 focus:ring-purple-500 outline-none"
+              className="w-full p-3 rounded-xl bg-white/10 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
             {errors.email && (
-              <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+              <p className="text-red-400 text-sm mt-1">{errors.email}</p>
             )}
           </div>
 
           <div>
-            <label className="block text-lg font-semibold text-gray-200 mt-3">
-              Password
-            </label>
+            <label className="block text-sm text-gray-200 mb-2">Password</label>
             <input
               type="password"
               name="password"
               placeholder="Enter password"
               value={formData.password}
               onChange={handleChange}
-              className="mt-1 w-full p-2 border rounded-lg text-[#ffccff] focus:ring-2 focus:ring-purple-500 outline-none"
+              className="w-full p-3 rounded-xl bg-white/10 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
             {errors.password && (
-              <p className="text-red-500 text-sm mt-1">{errors.password}</p>
+              <p className="text-red-400 text-sm mt-1">{errors.password}</p>
             )}
           </div>
 
           <button
             type="submit"
-            onClick={handleSubmit}
-            className="w-full mt-6 bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded-lg transition"
+            className="w-full py-3 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-bold text-lg transition"
           >
-            Submit
+            Register
           </button>
         </form>
-      </div>
+      </motion.div>
     </div>
   );
 }
