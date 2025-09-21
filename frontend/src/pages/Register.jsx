@@ -40,11 +40,14 @@ function Register() {
     } else {
       setErrors({});
       try {
-        const res = await fetch("http://13.126.240.74:5000/api/users/register", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(formData),
-        });
+        const res = await fetch(
+          "https://2affed6375ba.ngrok-free.app/api/users/register",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(formData),
+          }
+        );
 
         const data = await res.json();
 
