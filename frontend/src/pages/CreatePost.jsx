@@ -25,28 +25,23 @@ function CreatePost() {
     try {
       setLoading(true);
 
-      // 1. Ask backend for presigned URL
+      // Step 1: get presigned URL
       const { data } = await axios.get(
         "https://c62defca805e.ngrok-free.app/api/posts/generate-presigned-url",
-        {
-          params: { fileName: file.name, fileType: file.type },
-        }
+        { params: { fileName: file.name, fileType: file.type } }
       );
 
-      // 2. Upload file to S3
+      // Step 2: upload file to S3
       await axios.put(data.uploadUrl, file, {
         headers: { "Content-Type": file.type },
       });
 
-      const token = localStorage.getItem("token");
-      console.log(token);
-
-      // 3. Save post in DB (title, description, fileUrl)
+      // Step 3: save post in DB
       await axios.post("https://c62defca805e.ngrok-free.app/api/posts", {
+        user_id: 1, // TODO: replace with real user id from auth
         title: formData.title,
-        description: formData.description,
-        fileUrl: data.fileUrl,
-        userId: 1, // TODO: replace with logged-in user's ID
+        text_content: formData.description,
+        image_url: data.fileUrl,
       });
 
       alert("Post created successfully!");

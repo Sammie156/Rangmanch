@@ -39,26 +39,25 @@ router.get("/generate-presigned-url", async (req, res) => {
 // Save post metadata
 router.post("/", async (req, res) => {
   try {
-    const { title, description, fileUrl, userId } = req.body;
+    const { title, text_content, image_url, user_id } = req.body;
 
     const sql = `
       INSERT INTO posts (user_id, title, text_content, image_url)
       VALUES (?, ?, ?, ?)
     `;
     const [result] = await pool.execute(sql, [
-      userId,
+      user_id,
       title,
-      description,
-      fileUrl,
+      text_content,
+      image_url,
     ]);
 
-    // Return inserted post
     const insertedPost = {
       post_id: result.insertId,
-      user_id: userId,
+      user_id,
       title,
-      text_content: description,
-      image_url: fileUrl,
+      text_content,
+      image_url,
       created_at: new Date(),
     };
 
