@@ -4,6 +4,7 @@ import morgan from "morgan";
 import dotenv from "dotenv";
 
 import userRoutes from "./routes/userRoutes.js";
+import postRoutes from "./routes/postRoutes.js";
 
 dotenv.config();
 
@@ -32,6 +33,7 @@ app.use(morgan("dev"));
 
 // Routes
 app.use("/api/users", userRoutes);
+app.use("/api/posts", postRoutes);
 
 // Start server
 const PORT = process.env.PORT || 5000;

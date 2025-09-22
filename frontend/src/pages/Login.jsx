@@ -61,7 +61,7 @@ function Login() {
           Login
         </h2>
         <p className="text-gray-200 text-center mb-6 font-medium">
-          Don’t have an account?{" "}
+          Don't have an account?{" "}
           <Link
             to="/register"
             className="text-purple-400 font-semibold hover:underline"

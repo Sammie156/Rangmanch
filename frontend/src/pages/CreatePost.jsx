@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
+import axios from "axios";
 
 function CreatePost() {
   const [formData, setFormData] = useState({
@@ -7,6 +8,7 @@ function CreatePost() {
     description: "",
   });
   const [file, setFile] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -20,9 +22,42 @@ function CreatePost() {
       return;
     }
 
-    // TODO: Connect with AWS backend for S3 upload + DB entry
-    console.log("Form data:", formData);
-    console.log("File:", file);
+    try {
+      setLoading(true);
+
+      // 1. Ask backend for presigned URL
+      const { data } = await axios.get(
+        "https://c62defca805e.ngrok-free.app/api/posts/generate-presigned-url",
+        {
+          params: { fileName: file.name, fileType: file.type },
+        }
+      );
+
+      // 2. Upload file to S3
+      await axios.put(data.uploadUrl, file, {
+        headers: { "Content-Type": file.type },
+      });
+
+      const token = localStorage.getItem("token");
+      console.log(token);
+
+      // 3. Save post in DB (title, description, fileUrl)
+      await axios.post("https://c62defca805e.ngrok-free.app/api/posts", {
+        title: formData.title,
+        description: formData.description,
+        fileUrl: data.fileUrl,
+        userId: 1, // TODO: replace with logged-in user's ID
+      });
+
+      alert("Post created successfully!");
+      setFormData({ title: "", description: "" });
+      setFile(null);
+    } catch (error) {
+      console.error("Error uploading post:", error);
+      alert("Failed to create post");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -57,6 +92,7 @@ function CreatePost() {
               value={formData.title}
               onChange={handleChange}
               className="w-full p-3 rounded-xl hover:bg-white/20 transition bg-white/10 text-white placeholder-gray-400 border border-white/20 focus:ring-2 focus:ring-purple-500 outline-none"
+              required
             />
 
             <textarea
@@ -66,6 +102,7 @@ function CreatePost() {
               onChange={handleChange}
               rows="4"
               className="w-full p-3 rounded-xl bg-white/10 hover:bg-white/20 transition text-white placeholder-gray-400 border border-white/20 focus:ring-2 focus:ring-purple-500 outline-none"
+              required
             />
 
             <div>
@@ -138,9 +175,10 @@ function CreatePost() {
 
             <button
               type="submit"
-              className="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-4 rounded-xl transition"
+              disabled={loading}
+              className="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-4 rounded-xl transition disabled:opacity-50"
             >
-              Create Post
+              {loading ? "Uploading..." : "Create Post"}
             </button>
           </form>
         </div>
