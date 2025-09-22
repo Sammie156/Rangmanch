@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 import pool from "../config/db.js";
 
 dotenv.config();
-const router = express.Router();
+const post_router = express.Router();
 
 const s3 = new AWS.S3({
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -12,32 +12,30 @@ const s3 = new AWS.S3({
   region: process.env.AWS_REGION,
 });
 
-// Generating a presigned URL
-router.get("/generate-presigned-url", async (req, res) => {
+// 1️⃣ Generate presigned URL
+post_router.get("/generate-presigned-url", async (req, res) => {
   try {
     const { fileName, fileType } = req.query;
 
     const params = {
       Bucket: process.env.AWS_BUCKET_NAME,
       Key: `uploads/${Date.now()}-${fileName}`,
-      Expires: 60, // URL valid for 60s
+      Expires: 60, // 1 minute
       ContentType: fileType,
     };
 
-    const url = await s3.getSignedUrlPromise("putObject", params);
+    const uploadUrl = await s3.getSignedUrlPromise("putObject", params);
+    const fileUrl = `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${params.Key}`;
 
-    res.json({
-      uploadUrl: url,
-      fileUrl: `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${params.Key}`,
-    });
+    res.json({ uploadUrl, fileUrl });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Failed to generate URL" });
   }
 });
 
-// Save post metadata
-router.post("/", async (req, res) => {
+// 2️⃣ Save post metadata to DB
+post_router.post("/", async (req, res) => {
   try {
     const { title, description, fileUrl, userId } = req.body;
 
@@ -68,4 +66,4 @@ router.post("/", async (req, res) => {
   }
 });
 
-export default router;
+export default post_router;
