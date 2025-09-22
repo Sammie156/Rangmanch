@@ -11,22 +11,26 @@ dotenv.config();
 const app = express();
 
 const whitelist = [
-  "http://localhost:5173",                  // Local dev
-  "https://rangmanch-site.netlify.app",    // Netlify frontend
-  "https://fb24d8bf88df.ngrok-free.app"    // ngrok HTTPS URL (update if ngrok URL changes)
+  "http://localhost:5173", // Local dev
+  "https://rangmanch-site.netlify.app", // Netlify frontend
+  "https://fb24d8bf88df.ngrok-free.app", // ngrok HTTPS URL (update if ngrok URL changes)
 ];
 
-app.use(cors({
-  origin: (origin, callback) => {
-    // Allow requests with no origin (like Postman) or from whitelisted domains
-    if (!origin || whitelist.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-  credentials: true
-}));
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      // Allow requests with no origin (like Postman) or from whitelisted domains
+      if (!origin || whitelist.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // ✅ allow preflight
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
+  })
+);
 
 app.use(express.json());
 app.use(morgan("dev"));
