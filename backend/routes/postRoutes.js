@@ -36,6 +36,8 @@ post_router.get("/generate-presigned-url", async (req, res) => {
 
 // 2️⃣ Save post metadata to DB
 post_router.post("/", async (req, res) => {
+  console.log("Received Body: ", req.body);
+
   try {
     const { title, description, fileUrl, userId } = req.body;
 

@@ -30,10 +30,17 @@ function CreatePost() {
         { params: { fileName: file.name, fileType: file.type } }
       );
 
-      console.log(data)
+      console.log(data);
 
       await axios.put(data.uploadUrl, file, {
         headers: { "Content-Type": file.type },
+      });
+
+      console.log("Saving post with:", {
+        userId: 1,
+        title: formData.title,
+        description: formData.description,
+        fileUrl: data.fileUrl,
       });
 
       // Step 3: save post in DB
