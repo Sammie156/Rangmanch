@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import axios from "axios";
 
 function Login() {
   const [formData, setFormData] = useState({
@@ -14,28 +15,28 @@ function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(`Form data : ${formData}`);
+    console.log("Form data:", formData);
 
     try {
-      const res = await fetch(
-        "https://cb4ee69c4387.ngrok-free.app/api/users/login",
+      const { data } = await axios.post(
+        "https://7485fb4b2df8.ngrok-free.app/api/users/login",
+        formData,
         {
-          method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(formData),
         }
       );
 
-      const data = await res.json();
+      console.log("Login response:", data);
 
-      if (res.ok) {
-        console.log(data);
-        if (data.token) {
-          localStorage.setItem("token", data.token);
-        }
+      if (data.token) {
+        localStorage.setItem("token", data.token);
+        // optional: redirect to dashboard or home
       }
     } catch (error) {
-      console.log(`Errors: ${error.message}`);
+      console.error(
+        "Login error:",
+        error.response?.data || error.message
+      );
     }
   };
 

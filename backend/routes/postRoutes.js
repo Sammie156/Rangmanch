@@ -46,8 +46,8 @@ post_router.post("/", async (req, res) => {
     const [result] = await pool.execute(sql, [
       userId,
       title,
-      description,
-      fileUrl,
+      text_content,
+      image_url,
     ]);
 
     const insertedPost = {
