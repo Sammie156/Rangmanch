@@ -17,7 +17,7 @@ const app = express();
 const whitelist = [
   "http://localhost:5173",                   // Local dev
   "https://rangmanch-site.netlify.app",     // Netlify frontend
-  "https://7485fb4b2df8.ngrok-free.app"    // ngrok HTTPS URL (update if URL changes)
+  "https://e91197d9fa22.ngrok-free.app"    // ngrok HTTPS URL (update if URL changes)
 ];
 
 app.use(

@@ -26,7 +26,7 @@ function CreatePost() {
       setLoading(true);
 
       const { data } = await axios.get(
-        "https://7485fb4b2df8.ngrok-free.app/api/posts/generate-presigned-url",
+        "https://e91197d9fa22.ngrok-free.app/api/posts/generate-presigned-url",
         { params: { fileName: file.name, fileType: file.type } }
       );
 
@@ -44,7 +44,7 @@ function CreatePost() {
       });
 
       // Step 3: save post in DB
-      await axios.put("https://7485fb4b2df8.ngrok-free.app/api/posts/", {
+      await axios.put("https://e91197d9fa22.ngrok-free.app/api/posts/", {
         user_id: 1, // TODO: replace with real user id from auth
         title: formData.title,
         text_content: formData.description,
